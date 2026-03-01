@@ -5,30 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invitation Françoise & David</title>
     <style>
-        body { margin: 0; padding: 0; background: linear-gradient(135deg, #8B4513, #A0522D); font-family: 'Georgia', serif; overflow: hidden; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; }
-        #df1 { max-width: 90%; max-height: 70vh; cursor: pointer; transition: opacity 1s; }
-        #df2 { max-width: 90%; max-height: 70vh; opacity: 0; transition: opacity 1s; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .texte { position: absolute; top: 10%; text-align: center; font-size: 1.5em; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); animation: fadeIn 2s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        .seal { position: absolute; top: 64%; left: 50%; transform: translate(-50%, -50%); width: 26%; height: auto; cursor: pointer; transition: transform 0.3s; z-index: 10; } /* Ajustez top/width si besoin pour centrer sur sceau rouge */
-        .seal:hover { transform: translate(-50%, -50%) scale(1.1); }
-        .ouvert { opacity: 0 !important; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            height: 100vh; overflow: hidden; 
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%); 
+            font-family: 'Georgia', serif; color: #fff; position: relative; 
+        }
+        .image-full { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            object-fit: cover; /* Étire sur tout l'écran sans déformer */
+            transition: opacity 1s ease-in-out; z-index: 1; 
+        }
+        #df2 { opacity: 0; }
+        .texte { 
+            position: absolute; top: 15%; left: 50%; transform: translateX(-50%); 
+            text-align: center; font-size: clamp(1.2em, 4vw, 2em); 
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8); z-index: 5;
+            animation: fadeIn 2s ease-out; max-width: 90%; 
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        .seal { 
+            position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); /* Ajustez top % pour sceau */
+            width: clamp(20%, 28%, 35%); height: auto; cursor: pointer; 
+            transition: transform 0.3s, box-shadow 0.3s; z-index: 10; 
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+        }
+        .seal:hover { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 20px rgba(255,255,255,0.5); }
     </style>
 </head>
 <body>
+    <img id="df1" class="image-full" src="DF 1.png" alt="Enveloppe invitation"> <!-- Remplacez par votre URL raw si besoin -->
+    <img id="df2" class="image-full" src="DF 2.png" alt="Invitation ouverte">
+    
     <div class="texte">
-        Vous avez reçu une nouvelle notification de Françoise & David.<br>
+        Vous venez de recevoir une invitation de Françoise et David.<br>
         Cliquez sur le sceau rouge pour ouvrir l'invitation.
     </div>
-    <img id="df1" src="DF 1.png" alt="Enveloppe invitation" onclick="ouvrir()">
-    <img id="df2" src="DF 2.png" alt="Invitation ouverte">
+    
+    <img class="seal" src="DF-1.jpg" alt="Sceau rouge" onclick="ouvrir()"> <!-- Même image, zone clic agrandie -->
+    
     <audio id="melodie" src="boite-musique-mariage.mp3" preload="auto"></audio>
+    
     <script>
         function ouvrir() {
-            document.getElementById('df1').classList.add('ouvert');
-            document.getElementById('df2').style.opacity = 1;
-            document.getElementById('melodie').play();
-            setTimeout(() => { window.location.href = 'https://fchdgi.github.io/wedding-website/'; }, 6000); // 6s pour musique + vue
+            document.getElementById('df1').style.opacity = '0';
+            document.getElementById('df2').style.opacity = '1';
+            document.querySelector('.texte').style.opacity = '0'; // Cache texte
+            document.querySelector('.seal').style.opacity = '0';
+            document.getElementById('melodie').play().catch(e => console.log('Audio bloqué'));
+            setTimeout(() => { window.location.href = 'https://fchdgi.github.io/wedding-website/'; }, 6000);
         }
     </script>
 </body>
