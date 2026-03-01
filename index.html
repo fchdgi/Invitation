@@ -10,31 +10,54 @@
             height: 100vh; overflow: hidden; 
             background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%); 
             font-family: 'Georgia', serif; color: #fff; position: relative; 
+            transition: opacity 2s ease-out;
         }
         .image-full { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            object-fit: cover; /* Étire sur tout l'écran sans déformer */
-            transition: opacity 1s ease-in-out; z-index: 1; 
+            object-fit: cover;
+            transition: opacity 1.5s ease-in-out; z-index: 1; 
         }
         #df2 { opacity: 0; }
         .texte { 
             position: absolute; top: 15%; left: 50%; transform: translateX(-50%); 
             text-align: center; font-size: clamp(1.2em, 4vw, 2em); 
             text-shadow: 2px 2px 8px rgba(0,0,0,0.8); z-index: 5;
-            animation: fadeIn 2s ease-out; max-width: 90%; 
+            animation: fadeIn 2s ease-out; max-width: 90%;
+            transition: opacity 1s ease-out, transform 1s ease-out;
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
         .seal { 
-            position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); /* Ajustez top % pour sceau */
+            position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%);
             width: clamp(20%, 28%, 35%); height: auto; cursor: pointer; 
-            transition: transform 0.3s, box-shadow 0.3s; z-index: 10; 
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); z-index: 10; 
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
         }
-        .seal:hover { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 20px rgba(255,255,255,0.5); }
+        .seal:hover { 
+            transform: translate(-50%, -50%) scale(1.2) rotate(5deg); 
+            filter: drop-shadow(0 8px 20px rgba(255,215,0,0.6));
+            box-shadow: 0 0 30px rgba(255,215,0,0.4);
+        }
+        .seal:active { transform: translate(-50%, -50%) scale(1.1) rotate(0deg); }
+        
+        /* Écran de transition élégant */
+        #transition { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #654321 100%);
+            display: none; justify-content: center; align-items: center; z-index: 100;
+            opacity: 0; transition: opacity 0.5s ease-out;
+        }
+        #transition.show { display: flex; opacity: 1; }
+        .loading-text {
+            font-size: clamp(1.5em, 5vw, 3em); text-align: center;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 0.7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
+        .hearts { position: absolute; top: 20%; font-size: 3em; animation: float 3s infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } }
     </style>
 </head>
 <body>
-    <img id="df1" class="image-full" src="DF 1.png" alt="Enveloppe invitation"> <!-- Remplacez par votre URL raw si besoin -->
+    <img id="df1" class="image-full" src="DF 1.png" alt="Enveloppe invitation">
     <img id="df2" class="image-full" src="DF 2.png" alt="Invitation ouverte">
     
     <div class="texte">
@@ -42,18 +65,40 @@
         Cliquez sur le sceau rouge pour ouvrir l'invitation.
     </div>
     
-    <img class="seal" src="DF-1.jpg" alt="Sceau rouge" onclick="ouvrir()"> <!-- Même image, zone clic agrandie -->
+    <img class="seal" src="DF 1.png" alt="Sceau rouge" onclick="ouvrir()">
     
     <audio id="melodie" src="boite-musique-mariage.mp3" preload="auto"></audio>
     
+    <!-- Écran de transition -->
+    <div id="transition">
+        <div class="hearts">💕</div>
+        <div class="loading-text">À bientôt pour la magie...</div>
+        <div class="hearts" style="animation-delay: 0.5s;">💕</div>
+    </div>
+    
     <script>
         function ouvrir() {
+            // Animation ouverture enveloppe
             document.getElementById('df1').style.opacity = '0';
             document.getElementById('df2').style.opacity = '1';
-            document.querySelector('.texte').style.opacity = '0'; // Cache texte
+            document.querySelector('.texte').style.opacity = '0';
             document.querySelector('.seal').style.opacity = '0';
+            
+            // Musique
             document.getElementById('melodie').play().catch(e => console.log('Audio bloqué'));
-            setTimeout(() => { window.location.href = 'https://fchdgi.github.io/wedding-website/'; }, 6000);
+            
+            // Transition élégante après 3s musique
+            setTimeout(() => {
+                document.body.style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('transition').classList.add('show');
+                }, 1000);
+            }, 3000);
+            
+            // Redirection finale après transition complète
+            setTimeout(() => {
+                window.location.href = 'https://fchdgi.github.io/wedding-website/';
+            }, 6000);
         }
     </script>
 </body>
