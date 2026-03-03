@@ -26,18 +26,31 @@
             transition: opacity 1s ease-out, transform 1s ease-out;
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        
+        /* ✅ SCEAU SUBTIL : lueur rouge discrète */
         .seal { 
-            position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%);
-            width: clamp(20%, 28%, 35%); height: auto; cursor: pointer; 
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); z-index: 10; 
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
+            position: absolute; top: 57%; left: 50%; transform: translate(-50%, -50%);
+            width: clamp(15%, 22%, 32%); aspect-ratio: 1;
+            border-radius: 50%; cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); z-index: 10;
+            
+            /* Effet subtil : lueur rouge + brillance */
+            box-shadow: 
+                0 0 20px rgba(220,20,60,0.3),
+                inset 0 0 20px rgba(255,255,255,0.1),
+                0 2px 8px rgba(0,0,0,0.4);
         }
         .seal:hover { 
-            transform: translate(-50%, -50%) scale(1.2) rotate(5deg); 
-            filter: drop-shadow(0 8px 20px rgba(255,215,0,0.6));
-            box-shadow: 0 0 30px rgba(255,215,0,0.4);
+            box-shadow: 
+                0 0 40px rgba(220,20,60,0.6),
+                inset 0 0 30px rgba(255,255,255,0.2),
+                0 4px 12px rgba(0,0,0,0.5);
+            transform: translate(-50%, -50%) scale(1.1);
         }
-        .seal:active { transform: translate(-50%, -50%) scale(1.1) rotate(0deg); }
+        .seal:active { 
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 0 0 30px rgba(220,20,60,0.4);
+        }
         
         /* Écran de transition élégant */
         #transition { 
@@ -65,29 +78,27 @@
         Cliquez sur le sceau rouge pour ouvrir l'invitation.
     </div>
     
-    <img class="seal" src="DF 1.png" alt="Sceau rouge" onclick="ouvrir()">
+    <!-- ✅ SCEAU SUBTIL : lueur rouge cliquable -->
+    <div class="seal" onclick="ouvrir()" title="Cliquez ici"></div>
     
     <audio id="melodie" src="boite-musique-mariage.mp3" preload="auto"></audio>
     
     <!-- Écran de transition -->
     <div id="transition">
         <div class="hearts">💕</div>
-        <div class="loading-text">Nous sommes heureux de vous inviter à célébrer notre union</div>
+        <div class="loading-text">Nous sommes honorés de vous convier à notre mariage</div>
         <div class="hearts" style="animation-delay: 0.5s;">💕</div>
     </div>
     
     <script>
         function ouvrir() {
-            // Animation ouverture enveloppe
             document.getElementById('df1').style.opacity = '0';
             document.getElementById('df2').style.opacity = '1';
             document.querySelector('.texte').style.opacity = '0';
             document.querySelector('.seal').style.opacity = '0';
             
-            // Musique
             document.getElementById('melodie').play().catch(e => console.log('Audio bloqué'));
             
-            // Transition élégante après 3s musique
             setTimeout(() => {
                 document.body.style.opacity = '0';
                 setTimeout(() => {
@@ -95,7 +106,6 @@
                 }, 1000);
             }, 3000);
             
-            // Redirection finale après transition complète
             setTimeout(() => {
                 window.location.href = 'https://fchdgi.github.io/wedding-website/';
             }, 6000);
@@ -103,4 +113,5 @@
     </script>
 </body>
 </html>
+
 
