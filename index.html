@@ -28,10 +28,9 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
         .seal { 
             position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%);
-            width: clamp(20%, 28%, 35%); height: auto; 
+            width: clamp(20%, 28%, 35%); height: auto; cursor: pointer; 
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); z-index: 10; 
             filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
-            pointer-events: none; /* Pour que seul le cercle soit cliquable */
         }
         .seal:hover { 
             transform: translate(-50%, -50%) scale(1.2) rotate(5deg); 
@@ -66,27 +65,14 @@
         Cliquez sur le sceau rouge pour ouvrir l'invitation.
     </div>
     
-    <!-- SCEAU avec image map : SEUL LE CERCLE est cliquable -->
-    <img class="seal" src="DF 1.png" alt="Sceau rouge" usemap="#sceauMap">
-    
-    <!-- Image map : zone circulaire autour du sceau rouge -->
-    <map name="sceauMap">
-        <!-- ADAPTATION NÉCESSAIRE : mesure le centre + rayon de ton sceau rouge -->
-        <!-- Exemple : coords="X_CENTRE,Y_CENTRE,RAYON" (pixels depuis coin supérieur gauche de l'image) -->
-        <area shape="circle" 
-              coords="200,200,100"  <!-- À CALCULER pour ton image ! -->
-              href="javascript:void(0)" 
-              alt="Ouvrir l'invitation"
-              onclick="ouvrir()"
-              title="Cliquez sur le sceau rouge">
-    </map>
+    <img class="seal" src="DF 1.png" alt="Sceau rouge" onclick="ouvrir()">
     
     <audio id="melodie" src="boite-musique-mariage.mp3" preload="auto"></audio>
     
     <!-- Écran de transition -->
     <div id="transition">
         <div class="hearts">💕</div>
-        <div class="loading-text">À bientôt pour la magie...</div>
+        <div class="loading-text">Nous sommes heureux de vous inviter à célébrer notre union</div>
         <div class="hearts" style="animation-delay: 0.5s;">💕</div>
     </div>
     
