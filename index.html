@@ -14,8 +14,9 @@
         }
         .image-full { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
-            object-fit: cover; /* ✅ FULL SCREEN partout ! */
+            object-fit: cover; /* Full screen optimal 1376x768 */
             transition: opacity 1.5s ease-in-out; z-index: 1; 
+            will-change: opacity;
         }
         #df2 { opacity: 0; }
         .texte { 
@@ -32,7 +33,7 @@
             position: absolute; top: -10%; width: clamp(16px, 3vw, 24px); height: clamp(16px, 3vw, 24px); 
             background: radial-gradient(ellipse at 30% 30%, #ffb6c1, #ff69b4, #dda0dd);
             border-radius: 50% 0 70% 0; transform: rotate(45deg); z-index: 3;
-            animation: fall linear infinite; opacity: 0.8;
+            animation: fall linear infinite; opacity: 0.8; will-change: transform, opacity;
         }
         .petal:nth-child(1) { left: 10%; animation-duration: 8s; }
         .petal:nth-child(2) { left: 20%; animation-duration: 10s; animation-delay: 1s; }
@@ -41,25 +42,28 @@
         .petal:nth-child(5) { left: 80%; animation-duration: 11s; animation-delay: 3s; }
         @keyframes fall { 0% { transform: rotate(0deg) translateY(0); opacity: 0.8; } 100% { transform: rotate(720deg) translateY(110vh); opacity: 0; } }
         
-        /* Sceau wax full screen */
+        /* ✅ SCEAU STABLE MOBILE/PC */
         .seal { 
-            position: fixed; top: clamp(50vh, 57vh, 70vh); left: 53%; 
+            position: fixed; top: 57vh; left: 57%; /* Fixe + centré */
             transform: translate(-50%, -50%);
-            width: clamp(6vmin, 6vmin, 6vmin); aspect-ratio: 1;
-            background: linear-gradient(135deg, #DC143C, #B22222), url('sceau-df1.png') center/contain no-repeat;
+            width: clamp(50px, 8vmin, 80px); /* Taille responsive */
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #DC143C, #B22222), 
+                        url('sceau-df1.png') center/contain no-repeat;
             background-blend-mode: multiply; border: 3px solid rgba(255,255,255,0.95);
             border-radius: 50%; cursor: pointer; z-index: 10;
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             box-shadow: 0 8px 32px rgba(220,20,60,0.4), inset 0 0 24px rgba(255,255,255,0.3);
+            will-change: transform;
         }
-        .seal:hover { 
+        .seal:hover, .seal:focus { 
             transform: translate(-50%, -50%) scale(1.12); 
             box-shadow: 0 12px 48px rgba(220,20,60,0.7), inset 0 0 32px rgba(255,255,255,0.5);
             animation: heartbeat 1s infinite;
         }
         @keyframes heartbeat { 0%,100%{transform:translate(-50%,-50%) scale(1);}50%{transform:translate(-50%,-50%) scale(1.1);} }
         
-        /* Transition full screen */
+        /* Transition */
         #transition { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
             background: linear-gradient(135deg, #f4e4bc 0%, #d9b38c 50%, #8B7355 100%);
@@ -83,20 +87,20 @@
     </style>
 </head>
 <body>
-    <img id="df1" class="image-full" src="DF 1.png" alt="Enveloppe full screen">
-    <img id="df2" class="image-full" src="DF 2.png" alt="Invitation full screen">
+    <img id="df1" class="image-full" src="DF 1.png" alt="Enveloppe full screen" loading="eager">
+    <img id="df2" class="image-full" src="DF 2.png" alt="Invitation full screen" loading="eager">
     
     <div class="petal"></div><div class="petal"></div><div class="petal"></div>
     <div class="petal"></div><div class="petal"></div>
     
     <div class="texte">
         Ouvrez la boîte à musique<br>
-        <strong>Françoise & David</strong>
+        <strong>Françoise et David</strong>
     </div>
     
-    <div class="seal" onclick="ouvrir()" title="Cliquez pour ouvrir 💕" aria-label="Ouvrir l'invitation"></div>
+    <div class="seal" onclick="ouvrir()" title="Cliquez pour ouvrir 💕" aria-label="Ouvrir l'invitation" role="button" tabindex="0"></div>
     
-    <audio id="melodie" src="boite-musique-mariage.mp3" preload="auto" loop="false"></audio>
+    <audio id="melodie" src="boite-musique-mariage.mp3" preload="auto" crossorigin="anonymous"></audio>
     
     <div id="transition">
         <div class="hearts">💕</div>
@@ -113,8 +117,8 @@
             document.querySelectorAll('.petal').forEach(p => p.style.opacity = '0');
             
             const melodie = document.getElementById('melodie');
-            melodie.volume = 0.4;
-            melodie.play().catch(e => console.log('Audio bloqué'));
+            melodie.volume = 0.3;
+            melodie.play().catch(e => console.log('Audio: ', e));
             
             setTimeout(() => {
                 document.body.style.opacity = '0';
@@ -123,9 +127,10 @@
             
             setTimeout(() => window.location.href = 'https://fchdgi.github.io/wedding-website/', 6800);
         }
+        // Accessibilité clavier
+        document.querySelector('.seal').addEventListener('keydown', (e) => { 
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ouvrir(); }
+        });
     </script>
 </body>
 </html>
-
-
-
