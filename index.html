@@ -14,7 +14,7 @@
         }
         .image-full { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
-            object-fit: cover; /* Full screen optimal 1376x768 */
+            object-fit: cover; /* Full screen 1376x768 */
             transition: opacity 1.5s ease-in-out; z-index: 1; 
             will-change: opacity;
         }
@@ -28,7 +28,7 @@
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
         
-        /* Pétales flottants */
+        /* Pétales */
         .petal { 
             position: absolute; top: -10%; width: clamp(16px, 3vw, 24px); height: clamp(16px, 3vw, 24px); 
             background: radial-gradient(ellipse at 30% 30%, #ffb6c1, #ff69b4, #dda0dd);
@@ -42,23 +42,21 @@
         .petal:nth-child(5) { left: 80%; animation-duration: 11s; animation-delay: 3s; }
         @keyframes fall { 0% { transform: rotate(0deg) translateY(0); opacity: 0.8; } 100% { transform: rotate(720deg) translateY(110vh); opacity: 0; } }
         
-        /* ✅ SCEAU STABLE MOBILE/PC */
+        /* ✅ SCEAU : CŒUR OR DE DF1 (pas d'image externe) */
         .seal { 
-            position: fixed; top: 57vh; left: 57%; /* Fixe + centré */
+            position: fixed; top: 52vh; left: 50%; 
             transform: translate(-50%, -50%);
-            width: clamp(50px, 8vmin, 80px); /* Taille responsive */
-            aspect-ratio: 1;
-            background: linear-gradient(135deg, #DC143C, #B22222), 
-                        url('sceau-df1.png') center/contain no-repeat;
-            background-blend-mode: multiply; border: 3px solid rgba(255,255,255,0.95);
+            width: clamp(50px, 8vmin, 80px); aspect-ratio: 1;
+            background: radial-gradient(circle at 40% 40%, #FFD700 0%, #FFA500 50%, #FF8C00 100%); /* Or cuivré cœur */
+            border: 4px solid rgba(255,255,255,0.95); /* Cadre brillant */
             border-radius: 50%; cursor: pointer; z-index: 10;
+            box-shadow: 0 8px 32px rgba(255,215,0,0.5), inset 0 0 20px rgba(255,255,255,0.4);
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            box-shadow: 0 8px 32px rgba(220,20,60,0.4), inset 0 0 24px rgba(255,255,255,0.3);
             will-change: transform;
         }
         .seal:hover, .seal:focus { 
             transform: translate(-50%, -50%) scale(1.12); 
-            box-shadow: 0 12px 48px rgba(220,20,60,0.7), inset 0 0 32px rgba(255,255,255,0.5);
+            box-shadow: 0 12px 48px rgba(255,215,0,0.7), inset 0 0 30px rgba(255,255,255,0.6);
             animation: heartbeat 1s infinite;
         }
         @keyframes heartbeat { 0%,100%{transform:translate(-50%,-50%) scale(1);}50%{transform:translate(-50%,-50%) scale(1.1);} }
@@ -87,7 +85,7 @@
     </style>
 </head>
 <body>
-    <img id="df1" class="image-full" src="DF 1.png" alt="Enveloppe full screen" loading="eager">
+    <img id="df1" class="image-full" src="DF 1.png" alt="Enveloppe avec cœur or full screen" loading="eager">
     <img id="df2" class="image-full" src="DF 2.png" alt="Invitation full screen" loading="eager">
     
     <div class="petal"></div><div class="petal"></div><div class="petal"></div>
@@ -98,7 +96,7 @@
         <strong>Françoise et David</strong>
     </div>
     
-    <div class="seal" onclick="ouvrir()" title="Cliquez pour ouvrir 💕" aria-label="Ouvrir l'invitation" role="button" tabindex="0"></div>
+    <div class="seal" onclick="ouvrir()" title="Cliquez le cœur pour ouvrir 💕" aria-label="Ouvrir l'invitation" role="button" tabindex="0"></div>
     
     <audio id="melodie" src="boite-musique-mariage.mp3" preload="auto" crossorigin="anonymous"></audio>
     
@@ -127,7 +125,6 @@
             
             setTimeout(() => window.location.href = 'https://fchdgi.github.io/wedding-website/', 6800);
         }
-        // Accessibilité clavier
         document.querySelector('.seal').addEventListener('keydown', (e) => { 
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ouvrir(); }
         });
