@@ -29,7 +29,7 @@
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
         
-        /* Save the Date - Nouveau texte sur DF2 */
+        /* Save the Date + Bouton */
         .save-date {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             text-align: center; z-index: 6; opacity: 0;
@@ -39,7 +39,23 @@
         }
         .save-date.show { opacity: 1; }
         .save-date .date { font-size: clamp(2.5em, 8vw, 5em); color: #8B4513; margin-bottom: 0.2em; }
-        .save-date .day { font-size: clamp(3.5em, 12vw, 7em); font-weight: 700; color: #DAA520; }
+        .save-date .day { font-size: clamp(3.5em, 12vw, 7em); font-weight: 700; color: #DAA520; margin-bottom: 1em; }
+        
+        /* Bouton Accéder au site */
+        .btn-site {
+            display: none; margin-top: 1.5em; padding: 0.8em 2em;
+            background: linear-gradient(135deg, rgba(255,215,0,0.9), rgba(255,182,193,0.8));
+            color: #5D4037; border: none; border-radius: 30px;
+            font-family: 'Dancing Script', cursive; font-size: clamp(1.1em, 3vw, 1.6em); font-weight: 700;
+            cursor: pointer; box-shadow: 0 8px 25px rgba(255,215,0,0.4), inset 0 2px 5px rgba(255,255,255,0.6);
+            transition: all 0.3s ease; opacity: 0; transform: scale(0.9);
+        }
+        .btn-site.show { display: block; opacity: 1; transform: scale(1); animation: pulseBtn 2s infinite; }
+        .btn-site:hover {
+            transform: scale(1.05); box-shadow: 0 12px 35px rgba(255,182,193,0.6), inset 0 3px 8px rgba(255,255,255,0.8);
+            background: linear-gradient(135deg, rgba(255,215,0,1), rgba(255,105,180,0.9));
+        }
+        @keyframes pulseBtn { 0%,100%{transform:scale(1);}50%{transform:scale(1.02);} }
         
         /* Pétales */
         .petal { 
@@ -120,10 +136,11 @@
         <strong>Françoise & David</strong>
     </div>
     
-    <!-- Nouveau : Save the Date centré sur DF2 -->
+    <!-- Save the Date + Bouton -->
     <div class="save-date" id="saveDate">
         <div class="date">Save the date</div>
         <div class="day">23 Mai 2026</div>
+        <button class="btn-site" id="btnSite" onclick="goToSite()" aria-label="Accéder au site du mariage">Accéder au site</button>
     </div>
     
     <div class="seal" onclick="ouvrir()" title="Cliquez le cœur pour ouvrir 💕" aria-label="Ouvrir l'invitation" role="button" tabindex="0"></div>
@@ -132,48 +149,47 @@
     
     <script>
         function ouvrir() {
-            // Fade out DF1, texte, pétales, sceau
             document.getElementById('df1').style.opacity = '0';
             document.querySelector('.texte').style.opacity = '0';
             document.querySelector('.seal').style.opacity = '0';
             document.querySelectorAll('.petal').forEach(p => p.style.opacity = '0');
             
-            // Fade in DF2 progressif (2s)
             setTimeout(() => {
                 document.getElementById('df2').style.opacity = '1';
             }, 500);
             
-            // Musique
             const melodie = document.getElementById('melodie');
             melodie.volume = 0.3;
             melodie.muted = false;
             melodie.play().catch(e => console.log('Audio bloqué:', e));
             
-            // Affichage Save the Date après DF2
             setTimeout(() => {
                 document.getElementById('saveDate').classList.add('show');
             }, 2500);
             
-            // Redirection à fin musique (ou fallback 30s)
+            // Bouton après 3s total (post-DF2)
+            setTimeout(() => {
+                document.getElementById('btnSite').classList.add('show');
+            }, 3500);
+            
+            // Redirection fin musique (fallback 30s)
             const maxWait = 30000;
-            const timeout = setTimeout(() => {
-                window.location.href = 'https://fchdgi.github.io/wedding-website/';
-            }, maxWait);
+            const timeout = setTimeout(goToSite, maxWait);
             
             melodie.onloadedmetadata = () => {
                 clearTimeout(timeout);
-                setTimeout(() => {
-                    window.location.href = 'https://fchdgi.github.io/wedding-website/';
-                }, melodie.duration * 1000);
+                setTimeout(goToSite, melodie.duration * 1000);
             };
-            
             melodie.onended = () => {
                 clearTimeout(timeout);
-                window.location.href = 'https://fchdgi.github.io/wedding-website/';
+                goToSite();
             };
         }
         
-        // Accessibilité
+        function goToSite() {
+            window.location.href = 'https://fchdgi.github.io/wedding-website/';
+        }
+        
         document.querySelector('.seal').addEventListener('keydown', (e) => { 
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ouvrir(); }
         });
@@ -183,6 +199,7 @@
     </script>
 </body>
 </html>
+
 
 
 
