@@ -29,9 +29,9 @@
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
         
-        /* Save the Date CORRIGÉ RESPONSIVE */
+        /* Save the Date REMONTÉ */
         .save-date {
-            position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%);
+            position: fixed; top: 38%; left: 50%; transform: translate(-50%, -50%);
             text-align: center; z-index: 6; opacity: 0;
             font-family: 'Great Vibes', cursive;
             text-shadow: 2px 2px 6px rgba(255,255,255,0.9), 0 0 15px rgba(255,182,193,0.8);
@@ -39,42 +39,49 @@
         }
         .save-date.show { opacity: 1; }
         .save-date .date { 
-            font-size: clamp(1.8em, 5vw, 3.2em); /* Réduit max PC: 3.2em~51px */
-            color: #8B4513; margin-bottom: 0.1em; 
+            font-size: clamp(1.8em, 5vw, 3.2em); color: #8B4513; margin-bottom: 0.1em; 
         }
         .save-date .day { 
-            font-size: clamp(2.4em, 7vw, 4.5em); /* Réduit max PC: 4.5em~72px */
-            font-weight: 700; color: #DAA520; margin-bottom: 1em; 
+            font-size: clamp(2.4em, 7vw, 4.5em); font-weight: 700; color: #DAA520; margin-bottom: 1em; 
         }
-        
-        /* Media queries pour PC/tablette */
         @media (min-width: 768px) {
-            .save-date .date { font-size: clamp(2em, 3vw, 3em); } /* Max 3em PC */
-            .save-date .day { font-size: clamp(2.8em, 4vw, 4.2em); } /* Max 4.2em */
-            .save-date { top: 48%; } /* Légèrement plus bas PC */
+            .save-date .date { font-size: clamp(2em, 3vw, 3em); }
+            .save-date .day { font-size: clamp(2.8em, 4vw, 4.2em); }
+            .save-date { top: 40%; }
         }
         @media (min-width: 1200px) {
-            .save-date .date { font-size: 2.8em; } /* Fixe raisonnable ultra-large */
+            .save-date .date { font-size: 2.8em; }
             .save-date .day { font-size: 4em; }
         }
         
-        /* Bouton */
+        /* Bouton BAS DROITE - TOUJOURS VISIBLE MOBILE */
         .btn-site {
-            display: none; margin-top: 1.5em; padding: 0.8em 2em;
-            background: linear-gradient(135deg, rgba(255,215,0,0.9), rgba(255,182,193,0.8));
-            color: #5D4037; border: none; border-radius: 30px;
-            font-family: 'Dancing Script', cursive; font-size: clamp(1.1em, 3vw, 1.6em); font-weight: 700;
-            cursor: pointer; box-shadow: 0 8px 25px rgba(255,215,0,0.4), inset 0 2px 5px rgba(255,255,255,0.6);
-            transition: all 0.3s ease; opacity: 0; transform: scale(0.9);
+            position: fixed; bottom: 5vh; right: 5vw; /* Bas droite */
+            display: none; padding: 0.7em 1.8em; min-width: 140px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.95), rgba(255,182,193,0.85));
+            color: #5D4037; border: none; border-radius: 25px;
+            font-family: 'Dancing Script', cursive; font-size: clamp(1em, 3.5vw, 1.4em); font-weight: 700;
+            cursor: pointer; box-shadow: 0 6px 20px rgba(255,215,0,0.5), inset 0 2px 5px rgba(255,255,255,0.7);
+            transition: all 0.3s ease; opacity: 0; transform: translateY(20px);
+            z-index: 7;
         }
-        .btn-site.show { display: block; opacity: 1; transform: scale(1); animation: pulseBtn 2s infinite; }
+        /* Mobile : visible dès DF2 */
+        @media (max-width: 480px) {
+            .btn-site { opacity: 0.9; transform: translateY(0); animation: pulseBtnMobile 2.5s infinite; display: block !important; }
+            .btn-site:hover { opacity: 1; transform: translateY(-2px); }
+        }
+        /* Desktop : apparait après 3.5s */
+        @media (min-width: 481px) {
+            .btn-site.show { display: block; opacity: 1; transform: translateY(0); animation: pulseBtn 2s infinite; }
+        }
         .btn-site:hover {
-            transform: scale(1.05); box-shadow: 0 12px 35px rgba(255,182,193,0.6), inset 0 3px 8px rgba(255,255,255,0.8);
-            background: linear-gradient(135deg, rgba(255,215,0,1), rgba(255,105,180,0.9));
+            transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 30px rgba(255,182,193,0.6), inset 0 3px 8px rgba(255,255,255,0.9);
+            background: linear-gradient(135deg, rgba(255,215,0,1), rgba(255,105,180,0.95));
         }
-        @keyframes pulseBtn { 0%,100%{transform:scale(1);}50%{transform:scale(1.02);} }
+        @keyframes pulseBtnMobile { 0%,100%{opacity:0.9;transform:translateY(0);}50%{opacity:1;transform:translateY(-3px);scale(1.02);} }
+        @keyframes pulseBtn { 0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-2px) scale(1.02);} }
         
-        /* Pétales et sceau inchangés */
+        /* Pétales */
         .petal { 
             position: absolute; top: -10%; width: clamp(16px, 3vw, 24px); height: clamp(16px, 3vw, 24px); 
             background: radial-gradient(ellipse at 30% 30%, #ffb6c1, #ff69b4, #dda0dd);
@@ -89,6 +96,7 @@
         .petal:nth-child(5) { left: 80%; animation-duration: 11s; animation-delay: 3s; }
         @keyframes fall { 0% { transform: rotate(0deg) translateY(0); opacity: 0.8; } 100% { transform: rotate(720deg) translateY(110vh); opacity: 0; } }
         
+        /* SCEAU inchangé */
         .seal { 
             position: fixed; top: 57vh; left: 58%; transform: translate(-50%, -50%);
             width: clamp(60px, 30vmin, 80px); height: clamp(60px, 30vmin, 80px); 
@@ -96,12 +104,19 @@
             box-shadow: 0 0 15px rgba(255,215,0,0.5),0 0 25px rgba(255,182,193,0.4),0 0 35px rgba(255,105,180,0.3),inset 0 0 15px rgba(255,255,255,0.2);
             animation: sparkle 2.5s ease-in-out infinite; will-change: box-shadow;
         }
-        @keyframes sparkle { /* inchangé, 3 phases */ 0%,100%{box-shadow:0 0 15px rgba(255,215,0,0.5),0 0 25px rgba(255,182,193,0.4),0 0 35px rgba(255,105,180,0.3),inset 0 0 15px rgba(255,255,255,0.2);transform:translate(-50%,-50%) scale(1);}33%{box-shadow:0 0 25px rgba(255,215,0,0.7),0 0 40px rgba(255,182,193,0.6),0 0 50px rgba(255,105,180,0.5),inset 0 0 25px rgba(255,255,255,0.4);transform:translate(-50%,-50%) scale(1.05);}66%{box-shadow:0 0 20px rgba(255,182,193,0.8),0 0 35px rgba(255,105,180,0.7),0 0 45px rgba(255,215,0,0.6),inset 0 0 20px rgba(255,255,255,0.3);transform:translate(-50%,-50%) scale(1.02);}}
-        .seal:hover, .seal:focus { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 40px rgba(255,215,0,0.9),0 0 60px rgba(255,182,193,0.8),0 0 80px rgba(255,105,180,0.7),inset 0 0 30px rgba(255,255,255,0.6); animation: sparkle 1s ease-in-out infinite; }
+        @keyframes sparkle {
+            0%,100%{box-shadow:0 0 15px rgba(255,215,0,0.5),0 0 25px rgba(255,182,193,0.4),0 0 35px rgba(255,105,180,0.3),inset 0 0 15px rgba(255,255,255,0.2);transform:translate(-50%,-50%) scale(1);}
+            33%{box-shadow:0 0 25px rgba(255,215,0,0.7),0 0 40px rgba(255,182,193,0.6),0 0 50px rgba(255,105,180,0.5),inset 0 0 25px rgba(255,255,255,0.4);transform:translate(-50%,-50%) scale(1.05);}
+            66%{box-shadow:0 0 20px rgba(255,182,193,0.8),0 0 35px rgba(255,105,180,0.7),0 0 45px rgba(255,215,0,0.6),inset 0 0 20px rgba(255,255,255,0.3);transform:translate(-50%,-50%) scale(1.02);}
+        }
+        .seal:hover, .seal:focus { 
+            transform: translate(-50%, -50%) scale(1.15); 
+            box-shadow: 0 0 40px rgba(255,215,0,0.9),0 0 60px rgba(255,182,193,0.8),0 0 80px rgba(255,105,180,0.7),inset 0 0 30px rgba(255,255,255,0.6);
+            animation: sparkle 1s ease-in-out infinite;
+        }
     </style>
 </head>
 <body>
-    <!-- HTML identique à précédent : df1,df2,pétales,texte,save-date avec btn-site,seal,audio,script ouvrir/goToSite -->
     <img id="df1" class="image-full" src="DF 1.png" alt="Enveloppe avec cœur or full screen" loading="eager">
     <img id="df2" class="image-full" src="DF 2.png" alt="Invitation full screen" loading="eager">
     
@@ -112,34 +127,43 @@
     <div class="save-date" id="saveDate">
         <div class="date">Save the date</div>
         <div class="day">23 Mai 2026</div>
-        <button class="btn-site" id="btnSite" onclick="goToSite()" aria-label="Accéder au site du mariage">Accéder au site</button>
     </div>
+    
+    <button class="btn-site" id="btnSite" onclick="goToSite()" aria-label="Accéder au site du mariage">Accéder au site</button>
     
     <div class="seal" onclick="ouvrir()" title="Cliquez le cœur pour ouvrir 💕" aria-label="Ouvrir l'invitation" role="button" tabindex="0"></div>
     
     <audio id="melodie" src="boite-musique-mariage.mp3" preload="metadata" crossorigin="anonymous" muted></audio>
     
     <script>
-        // Script identique : ouvrir() avec timelines, goToSite(), events seal
         function ouvrir() {
             document.getElementById('df1').style.opacity = '0';
             document.querySelector('.texte').style.opacity = '0';
             document.querySelector('.seal').style.opacity = '0';
             document.querySelectorAll('.petal').forEach(p => p.style.opacity = '0');
             setTimeout(() => document.getElementById('df2').style.opacity = '1', 500);
-            const melodie = document.getElementById('melodie'); melodie.volume=0.3; melodie.muted=false; melodie.play().catch(e=>console.log('Audio:',e));
+            const melodie = document.getElementById('melodie'); 
+            melodie.volume = 0.3; melodie.muted = false; melodie.play().catch(e => console.log('Audio:', e));
             setTimeout(() => document.getElementById('saveDate').classList.add('show'), 2500);
-            setTimeout(() => document.getElementById('btnSite').classList.add('show'), 3500);
-            const maxWait=30000, timeout=setTimeout(goToSite,maxWait);
-            melodie.onloadedmetadata=()=>{clearTimeout(timeout);setTimeout(goToSite,melodie.duration*1000);};
-            melodie.onended=()=>{clearTimeout(timeout);goToSite();};
+            // Desktop seulement : show après 3.5s (mobile déjà visible)
+            if (window.innerWidth > 480) {
+                setTimeout(() => document.getElementById('btnSite').classList.add('show'), 3500);
+            }
+            const maxWait = 30000, timeout = setTimeout(goToSite, maxWait);
+            melodie.onloadedmetadata = () => { clearTimeout(timeout); setTimeout(goToSite, melodie.duration * 1000); };
+            melodie.onended = () => { clearTimeout(timeout); goToSite(); };
         }
-        function goToSite(){window.location.href='https://fchdgi.github.io/wedding-website/';}
-        document.querySelector('.seal').addEventListener('keydown',(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();ouvrir();}});
-        document.querySelector('.seal').addEventListener('touchstart',(e)=>{e.preventDefault();ouvrir();},{passive:false});
+        function goToSite() { window.location.href = 'https://fchdgi.github.io/wedding-website/'; }
+        document.querySelector('.seal').addEventListener('keydown', (e) => { 
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ouvrir(); } 
+        });
+        document.querySelector('.seal').addEventListener('touchstart', (e) => {
+            e.preventDefault(); ouvrir();
+        }, { passive: false });
     </script>
 </body>
 </html>
+
 
 
 
