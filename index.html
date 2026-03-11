@@ -29,7 +29,7 @@
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
         
-        /* Pétales corrigés */
+        /* Pétales */
         .petal { 
             position: absolute; top: -10%; width: clamp(16px, 3vw, 24px); height: clamp(16px, 3vw, 24px); 
             background: radial-gradient(ellipse at 30% 30%, #ffb6c1, #ff69b4, #dda0dd);
@@ -37,34 +37,34 @@
             animation: fall linear infinite; opacity: 0.8; 
             will-change: transform, opacity; contain: layout style;
         }
-        @keyframes fall {
-            0% { transform: rotate(0deg) translateY(0); opacity: 0.8; }
-            100% { transform: rotate(720deg) translateY(110vh); opacity: 0; }
-        }
         .petal:nth-child(1) { left: 10%; animation-duration: 8s; }
-        .petal:nth-child(2) { left: 20%; animation-duration: 10s; }
-        .petal:nth-child(3) { left: 30%; animation-duration: 12s; }
-        .petal:nth-child(4) { left: 40%; animation-duration: 9s; }
-        .petal:nth-child(5) { left: 50%; animation-duration: 11s; }
-        .petal:nth-child(6) { left: 60%; animation-duration: 13s; }
-        .petal:nth-child(7) { left: 70%; animation-duration: 10s; }
-        .petal:nth-child(8) { left: 80%; animation-duration: 12s; }
-        .petal:nth-child(9) { left: 90%; animation-duration: 14s; }
-
-        /* SCEAU TRANSPARENT SCINTILLANT */
+        .petal:nth-child(2) { left: 20%; animation-duration: 10s; animation-delay: 1s; }
+        .petal:nth-child(3) { left: 30%; animation-duration: 7s; animation-delay: 2s; }
+        .petal:nth-child(4) { left: 60%; animation-duration: 9s; animation-delay: 0.5s; }
+        .petal:nth-child(5) { left: 80%; animation-duration: 11s; animation-delay: 3s; }
+        @keyframes fall { 0% { transform: rotate(0deg) translateY(0); opacity: 0.8; } 100% { transform: rotate(720deg) translateY(110vh); opacity: 0; } }
+        
+        /* ✅ SCEAU TRANSPARENT SCINTILLANT */
         .seal { 
             position: fixed; top: 57vh; left: 58%; 
             transform: translate(-50%, -50%);
             width: clamp(60px, 30vmin, 80px); height: clamp(60px, 30vmin, 80px); 
-            background: transparent; border: none; outline: none; cursor: pointer; z-index: 10;
+            background: transparent; /* ✅ Transparent */
+            border-radius: 50%; cursor: pointer; z-index: 10;
+            
+            /* ✅ Lueur scintillante continue */
             box-shadow: 
                 0 0 15px rgba(255,215,0,0.5),
                 0 0 25px rgba(255,182,193,0.4),
                 0 0 35px rgba(255,105,180,0.3),
                 inset 0 0 15px rgba(255,255,255,0.2);
+            
+            /* ✅ Animation de scintillement */
             animation: sparkle 2.5s ease-in-out infinite;
             will-change: box-shadow;
         }
+        
+        /* ✅ Animation scintillante */
         @keyframes sparkle {
             0%, 100% { 
                 box-shadow: 
@@ -91,6 +91,8 @@
                 transform: translate(-50%, -50%) scale(1.02);
             }
         }
+        
+        /* ✅ Effet au survol */
         .seal:hover, .seal:focus { 
             transform: translate(-50%, -50%) scale(1.15); 
             box-shadow: 
@@ -98,52 +100,61 @@
                 0 0 60px rgba(255,182,193,0.8),
                 0 0 80px rgba(255,105,180,0.7),
                 inset 0 0 30px rgba(255,255,255,0.6);
-            animation-duration: 1s;
+            animation: sparkle 1s ease-in-out infinite;
         }
-
+        
         /* Transition */
         #transition { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
-            background: radial-gradient(circle, rgba(255,182,193,0.8) 0%, transparent 70%); 
-            opacity: 0; z-index: 20; transition: opacity 0.5s; 
+            background: linear-gradient(135deg, #f4e4bc 0%, #d9b38c 50%, #8B7355 100%);
+            display: none; justify-content: center; align-items: center; z-index: 100;
+            opacity: 0; transition: opacity 0.6s ease-out;
         }
+        #transition.show { display: flex; opacity: 1; }
+        .loading-text {
+            font-size: clamp(1.6em, 5.5vw, 3.2em); text-align: center; font-family: 'Great Vibes', cursive;
+            color: #8B4513; text-shadow: 2px 2px 6px rgba(255,255,255,0.9);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0%,100%{opacity:0.8;transform:scale(1);}50%{opacity:1;transform:scale(1.06);} }
         .hearts { 
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            font-size: clamp(4em, 15vw, 8em); animation: float 2s ease-in-out infinite; 
+            position: absolute; font-size: clamp(2.2em, 6.5vw, 3.5em); 
+            animation: float 3s infinite; color: #ff69b4; 
         }
-        @keyframes float { 0%, 100% { transform: translate(-50%, -50%) translateY(0); } 50% { transform: translate(-50%, -50%) translateY(-20px); } }
-        .btn-site { 
-            position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); 
-            background: rgba(255,255,255,0.9); border: none; padding: 12px 24px; 
-            font-family: 'Dancing Script', cursive; font-size: 1.5em; cursor: pointer; 
-            border-radius: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); opacity: 0; 
-            transition: opacity 0.5s; 
-        }
-        .btn-site.show { opacity: 1; }
+        .hearts:nth-child(1) { top: 15%; left: 20%; animation-delay: 0s; }
+        .hearts:nth-child(3) { top: 15%; right: 20%; animation-delay: 0.8s; }
+        @keyframes float { 0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-25px) rotate(15deg);} }
     </style>
 </head>
 <body>
-    <img id="df1" class="image-full" src="DF 1.png" alt="Invitation 1">
-    <img id="df2" class="image-full" src="DF 2.png" alt="Invitation 2">
-    
-    <div class="texte">Françoise & David<br>Vous êtes invités ! 💕</div>
+    <img id="df1" class="image-full" src="DF 1.png" alt="Enveloppe avec cœur or full screen" loading="eager">
+    <img id="df2" class="image-full" src="DF 2.png" alt="Invitation full screen" loading="eager">
     
     <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+    <div class="petal"></div><div class="petal"></div>
+    
+    <div class="texte">
+        Ouvrez la boîte à musique<br>
+        <strong>Françoise & David</strong>
+    </div>
     
     <div class="seal" onclick="ouvrir()" title="Cliquez le cœur pour ouvrir 💕" aria-label="Ouvrir l'invitation" role="button" tabindex="0"></div>
-    <audio id="melodie" src="boite-musique-mariage.mp3" preload="metadata"></audio>
+    
+    <audio id="melodie" src="boite-musique-mariage.mp3" preload="metadata" crossorigin="anonymous" muted></audio>
     
     <div id="transition">
         <div class="hearts">💕</div>
-        <button class="btn-site" onclick="rediriger()">Accéder au site</button>
+        <div class="loading-text">Nous sommes honorés de vous convier à notre mariage</div>
+        <div class="hearts">💕</div>
     </div>
-
+    
     <script>
         function ouvrir() {
             document.getElementById('df1').style.opacity = '0';
             document.getElementById('df2').style.opacity = '1';
+            document.querySelector('.texte').style.opacity = '0';
+            document.querySelector('.seal').style.opacity = '0';
+            document.querySelectorAll('.petal').forEach(p => p.style.opacity = '0');
             
             const melodie = document.getElementById('melodie');
             melodie.volume = 0.3;
@@ -151,24 +162,13 @@
             melodie.play().catch(e => console.log('Audio bloqué:', e));
             
             setTimeout(() => {
-                document.getElementById('transition').style.opacity = '1';
-                document.querySelector('.btn-site').classList.add('show');
-            }, 500);
+                document.body.style.opacity = '0';
+                setTimeout(() => document.getElementById('transition').classList.add('show'), 1200);
+            }, 3200);
+            
+            setTimeout(() => window.location.href = 'https://fchdgi.github.io/wedding-website/', 6800);
         }
         
-        function rediriger() {
-            document.body.style.opacity = '0';
-            setTimeout(() => window.location.href = 'https://fchdgi.github.io/wedding-website/', 800);
-        }
-        
-        // Auto-redirection après 20s sur DF2
-        setTimeout(() => {
-            if (document.getElementById('df2').style.opacity === '1') {
-                rediriger();
-            }
-        }, 20000);
-        
-        // Accessibilité et mobile
         document.querySelector('.seal').addEventListener('keydown', (e) => { 
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ouvrir(); }
         });
