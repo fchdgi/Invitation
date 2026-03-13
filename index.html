@@ -29,35 +29,62 @@
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
         
-        /* Save the Date REMONTÉ */
+        /* Save the Date - OPTIMISÉ RESPONSIVE */
         .save-date {
-            position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%);
+            position: fixed; left: 50%; transform: translateX(-50%);
             text-align: center; z-index: 6; opacity: 0;
             font-family: 'Great Vibes', cursive;
             text-shadow: 2px 2px 6px rgba(255,255,255,0.9), 0 0 15px rgba(255,182,193,0.8);
             transition: opacity 1.5s ease-out; letter-spacing: 0.05em; line-height: 1.1;
         }
         .save-date.show { opacity: 1; }
-        .save-date .date { 
-            font-size: clamp(4em, 5vw, 3.2em); color: #8B4513; margin-bottom: 0.1em; 
-        }
-        .save-date .day { 
-            font-size: clamp(5em, 7vw, 4.5em); font-weight: 700; color: #DAA520; margin-bottom: 1em; 
-        }
-        @media (min-width: 768px) {
-            .save-date .date { font-size: clamp(2.5em, 4vw, 2.8em); }
-            .save-date .day { font-size: clamp(3em, 5vw, 3.5em); }
-            .save-date { top: 40%; }
-        }
-        @media (min-width: 1200px) {
-            .save-date .date { font-size: 4em; }
-            .save-date .day { font-size: 5em; }
+        
+        /* Mobile : haut écran, petites tailles */
+        @media (max-width: 480px) {
+            .save-date { 
+                top: 25%; font-size: clamp(1.8em, 6vw, 2.5em); 
+                max-width: 85vw;
+            }
+            .save-date .date { 
+                font-size: clamp(1.2em, 4vw, 1.8em); color: #8B4513; margin-bottom: 0.2em; 
+            }
+            .save-date .day { 
+                font-size: clamp(2em, 7vw, 3em); font-weight: 700; color: #DAA520; 
+            }
         }
         
-        /* Bouton BAS DROITE - TOUJOURS VISIBLE MOBILE */
+        /* Tablette : milieu haut */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .save-date { 
+                top: 30%; font-size: clamp(2.2em, 5vw, 3em); 
+            }
+            .save-date .date { 
+                font-size: clamp(1.8em, 3.5vw, 2.2em); color: #8B4513; margin-bottom: 0.1em; 
+            }
+            .save-date .day { 
+                font-size: clamp(2.5em, 6vw, 3.8em); font-weight: 700; color: #DAA520; margin-bottom: 0.5em; 
+            }
+        }
+        
+        /* Desktop : centre, grandes tailles */
+        @media (min-width: 769px) {
+            .save-date { top: 40%; }
+            .save-date .date { 
+                font-size: clamp(2.5em, 4vw, 4em); color: #8B4513; margin-bottom: 0.1em; 
+            }
+            .save-date .day { 
+                font-size: clamp(3.5em, 6vw, 5.5em); font-weight: 700; color: #DAA520; margin-bottom: 1em; 
+            }
+        }
+        @media (min-width: 1200px) {
+            .save-date .date { font-size: 4.2em; }
+            .save-date .day { font-size: 6em; }
+        }
+        
+        /* Bouton BAS DROITE - Caché jusqu'au clic sur seal */
         .btn-site {
-            position: fixed; bottom: 5vh; right: 5vw; /* Bas droite */
-            display: none; padding: 0.7em 1.8em; min-width: 140px;
+            position: fixed; bottom: 5vh; right: 5vw;
+            padding: 0.7em 1.8em; min-width: 140px; display: none; /* Caché par défaut */
             background: linear-gradient(135deg, rgba(255,215,0,0.95), rgba(255,182,193,0.85));
             color: #5D4037; border: none; border-radius: 25px;
             font-family: 'Dancing Script', cursive; font-size: clamp(1em, 3.5vw, 1.4em); font-weight: 700;
@@ -65,20 +92,14 @@
             transition: all 0.3s ease; opacity: 0; transform: translateY(20px);
             z-index: 7;
         }
-        /* Mobile : visible dès DF2 */
-        @media (max-width: 480px) {
-            .btn-site { opacity: 0.9; transform: translateY(0); animation: pulseBtnMobile 2.5s infinite; display: block !important; }
-            .btn-site:hover { opacity: 1; transform: translateY(-2px); }
-        }
-        /* Desktop : apparait après 3.5s */
-        @media (min-width: 481px) {
-            .btn-site.show { display: block; opacity: 1; transform: translateY(0); animation: pulseBtn 2s infinite; }
+        .btn-site.show { 
+            display: block !important; opacity: 1; transform: translateY(0); 
+            animation: pulseBtn 2s infinite; 
         }
         .btn-site:hover {
             transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 30px rgba(255,182,193,0.6), inset 0 3px 8px rgba(255,255,255,0.9);
             background: linear-gradient(135deg, rgba(255,215,0,1), rgba(255,105,180,0.95));
         }
-        @keyframes pulseBtnMobile { 0%,100%{opacity:0.9;transform:translateY(0);}50%{opacity:1;transform:translateY(-3px);scale(1.02);} }
         @keyframes pulseBtn { 0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-2px) scale(1.02);} }
         
         /* Pétales */
@@ -133,30 +154,43 @@
     
     <div class="seal" onclick="ouvrir()" title="Cliquez le cœur pour ouvrir 💕" aria-label="Ouvrir l'invitation" role="button" tabindex="0"></div>
     
-    <audio id="melodie" src="boite-musique-mariage.mp3" preload="metadata" crossorigin="anonymous" muted></audio>
+    <audio id="melodie" src="boite-musique-mariage.mp3" preload="metadata" crossorigin="anonymous"></audio>
     
     <script>
         function ouvrir() {
+            // Interaction utilisateur détectée → audio activé
             document.getElementById('df1').style.opacity = '0';
             document.querySelector('.texte').style.opacity = '0';
             document.querySelector('.seal').style.opacity = '0';
             document.querySelectorAll('.petal').forEach(p => p.style.opacity = '0');
+            
             setTimeout(() => document.getElementById('df2').style.opacity = '1', 500);
+            
+            // MUSIQUE : Fonctionne sur mobile après interaction
             const melodie = document.getElementById('melodie'); 
-            melodie.volume = 0.3; melodie.muted = false; melodie.play().catch(e => console.log('Audio:', e));
+            melodie.volume = 0.3; 
+            melodie.play().catch(e => console.log('Audio:', e));
+            
+            // Save the date après 2.5s
             setTimeout(() => document.getElementById('saveDate').classList.add('show'), 2500);
-            // Desktop seulement : show après 3.5s (mobile déjà visible)
-            if (window.innerWidth > 480) {
-                setTimeout(() => document.getElementById('btnSite').classList.add('show'), 3500);
-            }
+            
+            // BOUTON : Apparaît UNIQUEMENT après clic sur seal (tous écrans)
+            setTimeout(() => document.getElementById('btnSite').classList.add('show'), 3500);
+            
+            // Auto-redirect après musique
             const maxWait = 30000, timeout = setTimeout(goToSite, maxWait);
             melodie.onloadedmetadata = () => { clearTimeout(timeout); setTimeout(goToSite, melodie.duration * 1000); };
             melodie.onended = () => { clearTimeout(timeout); goToSite(); };
         }
+        
         function goToSite() { window.location.href = 'https://fchdgi.github.io/wedding-website/'; }
+        
+        // Accessibilité clavier
         document.querySelector('.seal').addEventListener('keydown', (e) => { 
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ouvrir(); } 
         });
+        
+        // Mobile touch optimisé
         document.querySelector('.seal').addEventListener('touchstart', (e) => {
             e.preventDefault(); ouvrir();
         }, { passive: false });
